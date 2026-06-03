@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="uz">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Loading...</title>
+
+		<style>
+			body {
+				margin: 0;
+				background: #000;
+				color: #00ff00;
+				font-family: Consolas, monospace;
+				overflow: hidden;
+			}
+
+			#terminal {
+				padding: 20px;
+				white-space: pre-line;
+			}
+
+			#bar {
+				width: 80%;
+				height: 30px;
+				border: 2px solid #00ff00;
+				margin: 20px auto;
+			}
+
+			#progress {
+				width: 0%;
+				height: 100%;
+				background: #00ff00;
+			}
+
+			#percent {
+				text-align: center;
+				margin-top: 10px;
+			}
+
+			.shake {
+				animation: shake 0.1s infinite;
+			}
+
+			@keyframes shake {
+				0% {
+					transform: translate(2px, 2px);
+				}
+				25% {
+					transform: translate(-2px, 1px);
+				}
+				50% {
+					transform: translate(2px, -2px);
+				}
+				75% {
+					transform: translate(-2px, -1px);
+				}
+				100% {
+					transform: translate(2px, 2px);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="terminal"></div>
+
+		<div id="bar">
+			<div id="progress"></div>
+		</div>
+
+		<div id="percent">0%</div>
+
+		<script>
+			const lines = [
+				'[+] Connecting...',
+				'[+] Checking system...',
+				'[+] Loading assets...',
+				'[+] Preparing animation...',
+				'[+] Finalizing...',
+			];
+
+			let line = 0;
+			const terminal = document.getElementById('terminal');
+
+			function printLine() {
+				if (line < lines.length) {
+					terminal.innerHTML += lines[line] + '\n';
+					line++;
+					setTimeout(printLine, 700);
+				}
+			}
+			printLine();
+
+			let p = 0;
+
+			const interval = setInterval(() => {
+				p++;
+
+				document.getElementById('progress').style.width = p + '%';
+				document.getElementById('percent').innerText = p + '%';
+
+				if (p > 85) {
+					document.body.classList.add('shake');
+				}
+
+				if (p >= 99) {
+					clearInterval(interval);
+
+					setTimeout(() => {
+						// Bu yerga istalgan URL ni yozing
+						window.location.href = 'https://web.telegram.org/';
+					}, 1500);
+				}
+			}, 80);
+		</script>
+	</body>
+</html>
